@@ -25,11 +25,11 @@
 
     <fragment
         android:id="@+id/fragmentFirst"
-        android:name="com.example.thrilion.marvelsherosearcher.Fragments.HeroesListFragment"
+        android:name="com.example.thrilion.marvelsherosearcher.Fragments.SuperheroListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/activity_vertical_margin"
         android:layout_below="@id/appbar"
-        tools:layout="@layout/fragment_heroes_list" />
+        tools:layout="@layout/fragment_superhero_list" />
 
 </RelativeLayout>
