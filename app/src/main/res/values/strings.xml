@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Marvel\'s Hero Searcher</string>
+    <string name="main_title">Busca tu superhéroe</string>
+    <string name="nombre_a_buscar">nombre a buscar</string>
+</resources>
