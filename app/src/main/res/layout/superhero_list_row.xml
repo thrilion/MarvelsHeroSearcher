@@ -9,8 +9,7 @@
         android:id="@+id/img_superhero"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@mipmap/ic_launcher" />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="0dp"

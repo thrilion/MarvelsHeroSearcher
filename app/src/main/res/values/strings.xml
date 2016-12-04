@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">Marvel\'s Hero Searcher</string>
+    <string name="app_name">Marvel\'s Superhero Searcher</string>
     <string name="main_title">Busca tu superhéroe</string>
     <string name="nombre_a_buscar">nombre a buscar</string>
     <string name="superhero_name">Nombre</string>
     <string name="superhero_description">Descripción</string>
+    <string name="sin_conexion">Sin conexión a Internet</string>
 </resources>
