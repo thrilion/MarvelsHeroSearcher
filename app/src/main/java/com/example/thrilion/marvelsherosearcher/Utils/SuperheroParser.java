@@ -66,12 +66,12 @@ public class SuperheroParser {
                 JSONObject url_list = urlArray.getJSONObject(j);
                 switch (url_list.getString(json_type)){
                     case json_type_detail:
-                        superhero.setDetail(url_list.getString(json_url));
-                        Log.i(TAG,"Detail: " + superhero.getDetail());
+                        superhero.setDetailLink(url_list.getString(json_url));
+                        Log.i(TAG,"Detail: " + superhero.getDetailLink());
                         break;
                     case json_type_wiki:
-                        superhero.setWiki(url_list.getString(json_url));
-                        Log.i(TAG,"Wiki: " + superhero.getWiki());
+                        superhero.setWikiLink(url_list.getString(json_url));
+                        Log.i(TAG,"Wiki: " + superhero.getWikiLink());
                         break;
                     case json_type_comiclink:
                         superhero.setComicLink(url_list.getString(json_url));

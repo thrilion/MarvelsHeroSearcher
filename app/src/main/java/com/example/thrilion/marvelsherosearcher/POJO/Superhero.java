@@ -13,8 +13,8 @@ public class Superhero implements Parcelable {
     private String mName;
     private String mDescription;
     private String mImage;
-    private String mDetail;
-    private String mWiki;
+    private String mDetailLink;
+    private String mWikiLink;
     private String mComicLink;
 
     public Superhero(){ }
@@ -27,10 +27,10 @@ public class Superhero implements Parcelable {
     public void setDescrption(String desc) { this.mDescription = desc; }
     public String getImage() { return mImage; }
     public void setImage(String image) { this.mImage = image; }
-    public String getDetail() { return mDetail; }
-    public void setDetail(String mDetail) { this.mDetail = mDetail; }
-    public String getWiki() { return mWiki; }
-    public void setWiki(String mWiki) { this.mWiki = mWiki; }
+    public String getDetailLink() { return mDetailLink; }
+    public void setDetailLink(String mDetail) { this.mDetailLink = mDetail; }
+    public String getWikiLink() { return mWikiLink; }
+    public void setWikiLink(String mWiki) { this.mWikiLink = mWiki; }
     public String getComicLink() { return mComicLink; }
     public void setComicLink(String mComicLink) { this.mComicLink = mComicLink; }
 
@@ -39,8 +39,8 @@ public class Superhero implements Parcelable {
         mName = in.readString();
         mDescription = in.readString();
         mImage = in.readString();
-        mDetail = in.readString();
-        mWiki = in.readString();
+        mDetailLink = in.readString();
+        mWikiLink = in.readString();
         mComicLink = in.readString();
     }
 
@@ -67,8 +67,8 @@ public class Superhero implements Parcelable {
         parcel.writeString(mName);
         parcel.writeString(mDescription);
         parcel.writeString(mImage);
-        parcel.writeString(mDetail);
-        parcel.writeString(mWiki);
+        parcel.writeString(mDetailLink);
+        parcel.writeString(mWikiLink);
         parcel.writeString(mComicLink);
     }
 }
