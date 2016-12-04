@@ -1,6 +1,7 @@
 package com.example.thrilion.marvelsherosearcher.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.thrilion.marvelsherosearcher.Activities.SuperheroInfoActivity;
 import com.example.thrilion.marvelsherosearcher.Data.DataManager;
 import com.example.thrilion.marvelsherosearcher.POJO.Superhero;
 import com.example.thrilion.marvelsherosearcher.R;
 import com.squareup.picasso.Picasso;
 
-import java.security.cert.Extension;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,16 @@ public class SuperheroListAdapter extends RecyclerView.Adapter<SuperheroListAdap
 
     @Override
     public SuperheroListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View viewRow = LayoutInflater.from(this.mContext).inflate(R.layout.superhero_list_row, parent, false);
+        final View viewRow = LayoutInflater.from(this.mContext).inflate(R.layout.superhero_list_row, parent, false);
+        // Añadimos un click listener a cada fila del Recyclerview
+        viewRow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(viewRow.getContext(), SuperheroInfoActivity.class);
+
+                viewRow.getContext().startActivity(intent);
+            }
+        });
         return new ViewHolder(viewRow);
     }
 
@@ -70,4 +80,6 @@ public class SuperheroListAdapter extends RecyclerView.Adapter<SuperheroListAdap
     public void clearHeroList(){
         this.mHeroList.clear();
     }
+
+    public List<Superhero> getHeroList(){ return mHeroList; }
 }

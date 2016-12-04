@@ -1,6 +1,7 @@
 package com.example.thrilion.marvelsherosearcher.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -17,9 +18,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.thrilion.marvelsherosearcher.Activities.SuperheroInfoActivity;
 import com.example.thrilion.marvelsherosearcher.Adapters.SuperheroListAdapter;
 import com.example.thrilion.marvelsherosearcher.POJO.Superhero;
 import com.example.thrilion.marvelsherosearcher.R;
+import com.example.thrilion.marvelsherosearcher.Utils.SuperheroListItemClickListener;
 import com.example.thrilion.marvelsherosearcher.Utils.SuperheroParser;
 import org.json.JSONException;
 
@@ -27,8 +30,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -39,6 +44,7 @@ public class SuperheroListFragment extends Fragment {
     private static final String TAG = "SuperheroListFragment";
     private static final String URL = "http://gateway.marvel.com/v1/public/characters?limit=100&nameStartsWith=";
     private static final String CREDENTIAL = "&ts=1&apikey=40a72695f7fbb7b6f5ef9a1fb23fd575&hash=a7298b72b9e4e288813727adbb4c4562";
+    public static final String EXTRA_SUPERHERO = "SUPERHERO";
 
     private ConnectivityManager mConnectionManager;
     private NetworkInfo mNetworkInfo;
@@ -49,11 +55,24 @@ public class SuperheroListFragment extends Fragment {
         View fragmentView = inflater.inflate(R.layout.fragment_superhero_list, container, false);
 
         // Creamos el Recyclerview y lo asignamos al adapter
-        final RecyclerView recycler = (RecyclerView) fragmentView.findViewById(R.id.superhero_list_recycler);
-        recycler.setHasFixedSize(true);
-        recycler.setLayoutManager(new LinearLayoutManager(fragmentView.getContext(), LinearLayoutManager.VERTICAL, false));
+        final RecyclerView recyclerView = (RecyclerView) fragmentView.findViewById(R.id.superhero_list_recycler);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(fragmentView.getContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new SuperheroListAdapter(fragmentView.getContext(), new ArrayList<Superhero>());
-        recycler.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
+
+        // Listener del RecyclerView
+        recyclerView.addOnItemTouchListener(
+            new SuperheroListItemClickListener(fragmentView.getContext(), new SuperheroListItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Superhero sh = adapter.getHeroList().get(position);
+                    Intent intent = new Intent(getActivity(), SuperheroInfoActivity.class);
+                    intent.putExtra(EXTRA_SUPERHERO, sh);
+                    getContext().startActivity(intent);
+                }
+            })
+        );
 
         // Comprobamos el estado de la conexión a Internet
         this.mConnectionManager = (ConnectivityManager) fragmentView.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -72,10 +91,19 @@ public class SuperheroListFragment extends Fragment {
                 @Override
                 public void afterTextChanged(Editable editable) {
                     if(heroName.getText().toString().length() >= 3){
-                        // Llamamos a la AsyncTask pasandole la URL desde la que descargar la lista de personajes
-                        String urlSearch = URL + heroName.getText().toString() + CREDENTIAL;
-                        urlSearch = urlSearch.replaceAll(" ", "%20");
-                        new CharacterListBackgroundTask().execute(urlSearch);
+                        // Preparamos la URL desde la que conectarnos a la API de Marvel
+                        String query = null;
+                        try {
+                            query = URLEncoder.encode(heroName.getText().toString(), "utf-8");
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        if(query != null) {
+                            // Llamamos a la AsyncTask pasandole la URL desde la que descargar la lista de personajes
+                            new CharacterListBackgroundTask().execute(URL + query + CREDENTIAL);
+                        }else{
+                            Toast.makeText(getContext(),"Error al entrar en el Superhéroe", Toast.LENGTH_LONG).show();
+                        }
                     }else{
                         adapter.clearHeroList();
                         adapter.notifyDataSetChanged();

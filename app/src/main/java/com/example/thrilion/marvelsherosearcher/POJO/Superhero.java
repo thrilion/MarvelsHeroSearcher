@@ -1,12 +1,14 @@
 package com.example.thrilion.marvelsherosearcher.POJO;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.widget.ImageView;
 
 /**
  * Created by 0kitachi on 02/12/2016.
  */
 
-public class Superhero {
+public class Superhero implements Parcelable {
     private int mId;
     private String mName;
     private String mDescription;
@@ -31,4 +33,42 @@ public class Superhero {
     public void setWiki(String mWiki) { this.mWiki = mWiki; }
     public String getComicLink() { return mComicLink; }
     public void setComicLink(String mComicLink) { this.mComicLink = mComicLink; }
+
+    protected Superhero(Parcel in) {
+        mId = in.readInt();
+        mName = in.readString();
+        mDescription = in.readString();
+        mImage = in.readString();
+        mDetail = in.readString();
+        mWiki = in.readString();
+        mComicLink = in.readString();
+    }
+
+    public static final Creator<Superhero> CREATOR = new Creator<Superhero>() {
+        @Override
+        public Superhero createFromParcel(Parcel in) {
+            return new Superhero(in);
+        }
+
+        @Override
+        public Superhero[] newArray(int size) {
+            return new Superhero[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(mId);
+        parcel.writeString(mName);
+        parcel.writeString(mDescription);
+        parcel.writeString(mImage);
+        parcel.writeString(mDetail);
+        parcel.writeString(mWiki);
+        parcel.writeString(mComicLink);
+    }
 }

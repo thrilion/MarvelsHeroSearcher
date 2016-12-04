@@ -5,4 +5,9 @@
     <string name="superhero_name">Nombre</string>
     <string name="superhero_description">Descripción</string>
     <string name="sin_conexion">Sin conexión a Internet</string>
+    <string name="links">Links</string>
+    <string name="detalle">Detalle</string>
+    <string name="comics">Comics</string>
+    <string name="wiki">Wiki</string>
+    <string name="recursos">Recursos</string>
 </resources>
