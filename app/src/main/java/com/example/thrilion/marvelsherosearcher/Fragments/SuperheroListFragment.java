@@ -37,19 +37,12 @@ import java.util.ArrayList;
 public class SuperheroListFragment extends Fragment {
 
     private static final String TAG = "SuperheroListFragment";
-    //private static final String URL_CHARACTER_LIST = "http://gateway.marvel.com/v1/public/characters?ts=1&apikey=40a72695f7fbb7b6f5ef9a1fb23fd575&hash=a7298b72b9e4e288813727adbb4c4562";
-    private static final String URL_CHARACTER_LIST = "http://gateway.marvel.com/v1/public/characters?nameStartsWith=Spider&limit=100&ts=1&apikey=40a72695f7fbb7b6f5ef9a1fb23fd575&hash=a7298b72b9e4e288813727adbb4c4562";
-    private static final String URL = "http://gateway.marvel.com/v1/public/characters?";
-    private static final String LIMIT = "100";
-    private static final String TIME_STAMP = "1";
-    private static final String API_KEY = "40a72695f7fbb7b6f5ef9a1fb23fd575";
-    private static final String HASH = "a7298b72b9e4e288813727adbb4c4562";
+    private static final String URL = "http://gateway.marvel.com/v1/public/characters?limit=100&nameStartsWith=";
+    private static final String CREDENTIAL = "&ts=1&apikey=40a72695f7fbb7b6f5ef9a1fb23fd575&hash=a7298b72b9e4e288813727adbb4c4562";
 
     private ConnectivityManager mConnectionManager;
     private NetworkInfo mNetworkInfo;
     private SuperheroListAdapter adapter;
-
-    public SuperheroListFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,27 +66,31 @@ public class SuperheroListFragment extends Fragment {
             final EditText heroName = (EditText) fragmentView.findViewById(R.id.edit_txt_hero_name);
             heroName.addTextChangedListener(new TextWatcher(){
                 @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if(heroName.getText().toString().length() >= 3){
-                        // Llamamos a la AsyncTask pasandole la URL desde la que descargar la lista de personajes
-                        new CharacterListBackgroundTask().execute(URL_CHARACTER_LIST);
-                    }
-                }
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
-                public void afterTextChanged(Editable editable) { }
+                public void afterTextChanged(Editable editable) {
+                    if(heroName.getText().toString().length() >= 3){
+                        // Llamamos a la AsyncTask pasandole la URL desde la que descargar la lista de personajes
+                        String urlSearch = URL + heroName.getText().toString() + CREDENTIAL;
+                        urlSearch = urlSearch.replaceAll(" ", "%20");
+                        new CharacterListBackgroundTask().execute(urlSearch);
+                    }else{
+                        adapter.clearHeroList();
+                        adapter.notifyDataSetChanged();
+                    }
+                }
             });
         }else{
             // En caso de error de conexión, mostramos los mensajes informativos pertinentes
             Log.e(SuperheroListFragment.TAG, "Sin conexión a Internet");
             Toast.makeText(fragmentView.getContext(), R.string.sin_conexion, Toast.LENGTH_LONG).show();
         }
-
         return fragmentView;
     }
 
-    // AsyncTask para la petición de personajes a la API de Marvel
+    // AsyncTask para las peticiones a la API de Marvel
     private class CharacterListBackgroundTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -103,18 +100,18 @@ public class SuperheroListFragment extends Fragment {
             BufferedReader reader = null;
 
             try {
-                // The input arguments are fetched in order
+                // Preparamos la conexión
                 URL myUrl = new URL(params[0]);
                 Log.i(TAG, "The URL is: " + params[0]);
                 urlConnection = (HttpURLConnection) myUrl.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.setDoInput(true);
-                // Starting the query
+                // Iniciamos la conexión
                 urlConnection.connect();
                 int respCode = urlConnection.getResponseCode();
                 Log.i(TAG, "HTTP response " + respCode);
                 if (respCode == HttpURLConnection.HTTP_OK) {
-                    // En caso que toda la conexión haya sido correcta, pasamos a tratar la respuesta
+                    // En caso que la conexión haya sido correcta, pasamos a tratar la respuesta
                     InputStream inputStream = urlConnection.getInputStream();
                     reader = new BufferedReader(new InputStreamReader(inputStream));
                     String line;
@@ -145,12 +142,13 @@ public class SuperheroListFragment extends Fragment {
 
             if (heroJsonStr != null) {
                 ArrayList<Superhero> heroList = null;
-                // Parseamos el JSON contenido en el String resultante en un ArrayList
+                // Parseamos el JSON, contenido en el String resultante, en un ArrayList
                 try {
                     heroList = SuperheroParser.ParseSuperheroJson(getActivity(), heroJsonStr);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                // Hacemos un update de la vista
                 adapter.updateSuperheroList(heroList);
                 adapter.notifyDataSetChanged();
 
