@@ -57,12 +57,20 @@
                     android:text="@string/superhero_name"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                <TextView
-                    android:id="@+id/txt_superhero_description"
+                <ScrollView
+                    android:id="@+id/scrollView1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/row_left_margin"
-                    android:text="@string/superhero_description" />
+                    android:layout_height="60dp">
+
+                    <TextView
+                        android:id="@+id/txt_superhero_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/row_left_margin"
+                        android:scrollbars="vertical"
+                        android:text="@string/superhero_description"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                </ScrollView>
             </LinearLayout>
         </LinearLayout>
 
@@ -84,21 +92,27 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/detalle" />
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/detalle"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/btn_wiki"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/wiki" />
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/wiki"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/btn_comics"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/comics" />
+                android:backgroundTint="@color/colorAccent"
+                android:text="@string/comics"
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <TextView
