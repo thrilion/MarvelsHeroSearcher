@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thrilion.marvelsherosearcher.Activities.SuperheroInfoActivity;
-import com.example.thrilion.marvelsherosearcher.Data.DataManager;
 import com.example.thrilion.marvelsherosearcher.POJO.Superhero;
 import com.example.thrilion.marvelsherosearcher.R;
 import com.squareup.picasso.Picasso;
@@ -48,16 +47,7 @@ public class SuperheroListAdapter extends RecyclerView.Adapter<SuperheroListAdap
 
     @Override
     public SuperheroListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View viewRow = LayoutInflater.from(this.mContext).inflate(R.layout.superhero_list_row, parent, false);
-        // Añadimos un click listener a cada fila del Recyclerview
-        viewRow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(viewRow.getContext(), SuperheroInfoActivity.class);
-
-                viewRow.getContext().startActivity(intent);
-            }
-        });
+        final View viewRow = LayoutInflater.from(this.mContext).inflate(R.layout.recycler_row, parent, false);
         return new ViewHolder(viewRow);
     }
 

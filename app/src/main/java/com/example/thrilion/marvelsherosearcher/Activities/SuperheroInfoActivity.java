@@ -3,6 +3,7 @@ package com.example.thrilion.marvelsherosearcher.Activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.thrilion.marvelsherosearcher.Fragments.SuperheroListFragment;
+import com.example.thrilion.marvelsherosearcher.Adapters.ResourcesAdapter;
+import com.example.thrilion.marvelsherosearcher.Fragments.ComicsContentFragment;
+import com.example.thrilion.marvelsherosearcher.Fragments.EventsContentFragment;
 import com.example.thrilion.marvelsherosearcher.POJO.Superhero;
 import com.example.thrilion.marvelsherosearcher.R;
 import com.squareup.picasso.Picasso;
@@ -27,12 +30,17 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_superhero_info);
 
+        // Seteamos la Toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText(R.string.comics));
-        tabs.addTab(tabs.newTab().setText(R.string.eventos));
+        // Seteamos el ViewPager
+        ViewPager viewPager = (ViewPager) findViewById(R.id.resources_viewpager);
+        setupViewPager(viewPager);
+
+        // Seteamos el TabLayout
+        TabLayout tabs = (TabLayout) findViewById(R.id.resources_tabs);
+        tabs.setupWithViewPager(viewPager);
 
         // Habilitamos el Action UP button
         ActionBar actionBar = this.getSupportActionBar();
@@ -40,7 +48,7 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
 
         // Recuperamos el intent y el objeto Superhero seleccionado
         Intent intent = getIntent();
-        this.mSuperhero = intent.getParcelableExtra(SuperheroListFragment.EXTRA_SUPERHERO);
+        this.mSuperhero = intent.getParcelableExtra(MainActivity.EXTRA_SUPERHERO);
 
         // Views de la activity
         final ImageView mImgSuperhero = (ImageView) findViewById(R.id.img_superhero);
@@ -66,6 +74,14 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
         }if(this.mSuperhero.getComicLink() == null){
             mComicsButton.setEnabled(false);
         }
+    }
+
+    // Añadimos los Fragments al TabLayout
+    private void setupViewPager(ViewPager viewPager) {
+        ResourcesAdapter adapter = new ResourcesAdapter(getSupportFragmentManager());
+        adapter.addFragment(new ComicsContentFragment(), "List");
+        adapter.addFragment(new EventsContentFragment(), "Tile");
+        viewPager.setAdapter(adapter);
     }
 
     @Override

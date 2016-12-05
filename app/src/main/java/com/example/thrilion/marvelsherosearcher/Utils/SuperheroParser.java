@@ -37,7 +37,6 @@ public class SuperheroParser {
         final String json_type_comiclink="comiclink";
         final String json_url="url";
 
-
         ArrayList<Superhero> heroList= new ArrayList<>();
 
         JSONObject heroJson = new JSONObject(heroJsonStr);

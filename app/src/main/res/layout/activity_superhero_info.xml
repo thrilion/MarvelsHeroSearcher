@@ -101,7 +101,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/txt_recursos"
+            android:id="@+id/txt_resources"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
@@ -109,14 +109,21 @@
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/main_content"
+            android:id="@+id/resources_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
+                android:id="@+id/resources_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.CoordinatorLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/resources_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     </LinearLayout>
 </LinearLayout>

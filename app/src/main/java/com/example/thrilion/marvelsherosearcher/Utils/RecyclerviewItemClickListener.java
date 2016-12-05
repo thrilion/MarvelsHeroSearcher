@@ -10,16 +10,16 @@ import android.view.View;
  * Created by 0kitachi on 04/12/2016.
  */
 
-public class SuperheroListItemClickListener implements RecyclerView.OnItemTouchListener {
+public class RecyclerviewItemClickListener implements RecyclerView.OnItemTouchListener {
+
     private OnItemClickListener mListener;
+    private GestureDetector mGestureDetector;
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
 
-    GestureDetector mGestureDetector;
-
-    public SuperheroListItemClickListener(Context context, OnItemClickListener listener) {
+    public RecyclerviewItemClickListener(Context context, OnItemClickListener listener) {
         mListener = listener;
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override

@@ -18,10 +18,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.thrilion.marvelsherosearcher.Adapters.SuperheroListAdapter;
-import com.example.thrilion.marvelsherosearcher.Fragments.SuperheroListFragment;
 import com.example.thrilion.marvelsherosearcher.POJO.Superhero;
 import com.example.thrilion.marvelsherosearcher.R;
-import com.example.thrilion.marvelsherosearcher.Utils.SuperheroListItemClickListener;
+import com.example.thrilion.marvelsherosearcher.Utils.RecyclerviewItemClickListener;
 import com.example.thrilion.marvelsherosearcher.Utils.SuperheroParser;
 
 import org.json.JSONException;
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Listener del RecyclerView
         recyclerView.addOnItemTouchListener(
-                new SuperheroListItemClickListener(this, new SuperheroListItemClickListener.OnItemClickListener() {
+                new RecyclerviewItemClickListener(this, new RecyclerviewItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         Superhero sh = adapter.getHeroList().get(position);
