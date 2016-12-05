@@ -20,19 +20,19 @@ public class Superhero implements Parcelable {
     public Superhero(){ }
 
     public int getId() { return mId; }
-    public void setId(int id) { this.mId = id; }
+    public void setId(int aId) { this.mId = aId; }
     public String getName() { return mName; }
-    public void setName(String name) { this.mName = name; }
+    public void setName(String aName) { this.mName = aName; }
     public String getDescription() { return mDescription; }
-    public void setDescrption(String desc) { this.mDescription = desc; }
+    public void setDescrption(String aDesc) { this.mDescription = aDesc; }
     public String getImage() { return mImage; }
-    public void setImage(String image) { this.mImage = image; }
+    public void setImage(String aImage) { this.mImage = aImage; }
     public String getDetailLink() { return mDetailLink; }
-    public void setDetailLink(String mDetail) { this.mDetailLink = mDetail; }
+    public void setDetailLink(String aDetail) { this.mDetailLink = aDetail; }
     public String getWikiLink() { return mWikiLink; }
-    public void setWikiLink(String mWiki) { this.mWikiLink = mWiki; }
+    public void setWikiLink(String aWiki) { this.mWikiLink = aWiki; }
     public String getComicLink() { return mComicLink; }
-    public void setComicLink(String mComicLink) { this.mComicLink = mComicLink; }
+    public void setComicLink(String aComicLink) { this.mComicLink = aComicLink; }
 
     protected Superhero(Parcel in) {
         mId = in.readInt();

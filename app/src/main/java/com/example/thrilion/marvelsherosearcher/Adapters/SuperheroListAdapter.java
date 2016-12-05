@@ -1,15 +1,14 @@
 package com.example.thrilion.marvelsherosearcher.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.thrilion.marvelsherosearcher.Activities.SuperheroInfoActivity;
 import com.example.thrilion.marvelsherosearcher.POJO.Superhero;
 import com.example.thrilion.marvelsherosearcher.R;
 import com.squareup.picasso.Picasso;
@@ -23,7 +22,7 @@ import java.util.List;
 
 public class SuperheroListAdapter extends RecyclerView.Adapter<SuperheroListAdapter.ViewHolder>{
 
-    private static final String IMG_EXTENSION = ".jpg";
+    private static final String TAG = "SuperheroListAdapter";
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTxtNameList;
@@ -31,9 +30,9 @@ public class SuperheroListAdapter extends RecyclerView.Adapter<SuperheroListAdap
         public ImageView mImgList;
         public ViewHolder(View itemView) {
             super(itemView);
-            this.mTxtNameList = (TextView) itemView.findViewById(R.id.txt_superhero_name);
-            this.mTxtDescriptionList = (TextView) itemView.findViewById(R.id.txt_superhero_description);
-            this.mImgList = (ImageView) itemView.findViewById(R.id.img_superhero);
+            this.mTxtNameList = (TextView) itemView.findViewById(R.id.txt_recycler_title);
+            this.mTxtDescriptionList = (TextView) itemView.findViewById(R.id.txt_recycler_description);
+            this.mImgList = (ImageView) itemView.findViewById(R.id.img_recycler);
         }
     }
 
@@ -55,7 +54,7 @@ public class SuperheroListAdapter extends RecyclerView.Adapter<SuperheroListAdap
     public void onBindViewHolder(SuperheroListAdapter.ViewHolder holder, int position) {
         holder.mTxtNameList.setText(this.mHeroList.get(position).getName());
         holder.mTxtDescriptionList.setText(this.mHeroList.get(position).getDescription());
-        Picasso.with(mContext).load(this.mHeroList.get(position).getImage() + IMG_EXTENSION).into(holder.mImgList);
+        Picasso.with(mContext).load(this.mHeroList.get(position).getImage()).into(holder.mImgList);
     }
 
     @Override

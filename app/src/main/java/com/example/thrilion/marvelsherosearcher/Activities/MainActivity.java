@@ -38,13 +38,13 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private static final String URL = "http://gateway.marvel.com/v1/public/characters?limit=100&nameStartsWith=";
+    private static final String URL_CHARACTER = "http://gateway.marvel.com/v1/public/characters?limit=100&nameStartsWith=";
     private static final String CREDENTIAL = "&ts=1&apikey=40a72695f7fbb7b6f5ef9a1fb23fd575&hash=a7298b72b9e4e288813727adbb4c4562";
     public static final String EXTRA_SUPERHERO = "SUPERHERO";
 
     private ConnectivityManager mConnectionManager;
     private NetworkInfo mNetworkInfo;
-    private SuperheroListAdapter adapter;
+    private SuperheroListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +54,19 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Creamos el Recyclerview y lo asignamos al adapter
+        // Creamos el Recyclerview y lo asignamos al mAdapter
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.superhero_list_recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        adapter = new SuperheroListAdapter(this, new ArrayList<Superhero>());
-        recyclerView.setAdapter(adapter);
+        mAdapter = new SuperheroListAdapter(this, new ArrayList<Superhero>());
+        recyclerView.setAdapter(mAdapter);
 
         // Listener del RecyclerView
         recyclerView.addOnItemTouchListener(
                 new RecyclerviewItemClickListener(this, new RecyclerviewItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Superhero sh = adapter.getHeroList().get(position);
+                        Superhero sh = mAdapter.getHeroList().get(position);
                         Intent intent = new Intent(getApplicationContext(), SuperheroInfoActivity.class);
                         intent.putExtra(EXTRA_SUPERHERO, sh);
                         startActivity(intent);
@@ -100,13 +100,13 @@ public class MainActivity extends AppCompatActivity {
                         }
                         if(query != null) {
                             // Llamamos a la AsyncTask pasandole la URL desde la que descargar la lista de personajes
-                            new MainActivity.CharacterListBackgroundTask().execute(URL + query + CREDENTIAL);
+                            new MainActivity.CharacterListBackgroundTask().execute(URL_CHARACTER + query + CREDENTIAL);
                         }else{
                             Toast.makeText(getApplicationContext(),"Error al seleccionar el Superhéroe", Toast.LENGTH_LONG).show();
                         }
                     }else{
-                        adapter.clearHeroList();
-                        adapter.notifyDataSetChanged();
+                        mAdapter.clearHeroList();
+                        mAdapter.notifyDataSetChanged();
                     }
                 }
             });
@@ -176,11 +176,9 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 // Hacemos un update de la vista
-                adapter.updateSuperheroList(heroList);
-                adapter.notifyDataSetChanged();
+                mAdapter.updateSuperheroList(heroList);
+                mAdapter.notifyDataSetChanged();
 
-            } else {
-                Log.i(TAG, "No hay superheroes que mostrar");
             }
         }
     }

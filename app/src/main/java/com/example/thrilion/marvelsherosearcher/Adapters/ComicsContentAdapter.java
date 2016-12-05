@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.example.thrilion.marvelsherosearcher.POJO.Comic;
 import com.example.thrilion.marvelsherosearcher.R;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +49,9 @@ public class ComicsContentAdapter extends RecyclerView.Adapter<ComicsContentAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        holder.mTxtComicTitle.setText(this.mComicList.get(position).getTitle());
+        holder.mTxtComicDescription.setText(this.mComicList.get(position).getDescription());
+        Picasso.with(mContext).load(this.mComicList.get(position).getImage()).into(holder.mImgComic);
     }
 
     @Override
@@ -55,4 +59,7 @@ public class ComicsContentAdapter extends RecyclerView.Adapter<ComicsContentAdap
         return this.mComicList.size();
     }
 
+    public void updateComicList(ArrayList<Comic> comicList) {
+        this.mComicList = comicList;
+    }
 }

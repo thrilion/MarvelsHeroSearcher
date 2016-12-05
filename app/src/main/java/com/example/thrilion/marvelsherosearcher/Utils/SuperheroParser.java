@@ -30,6 +30,7 @@ public class SuperheroParser {
         final String json_description="description";
         final String json_thumbnail="thumbnail";
         final String json_path="path";
+        final String json_extension="extension";
         final String json_urls="urls";
         final String json_type="type";
         final String json_type_detail="detail";
@@ -58,7 +59,8 @@ public class SuperheroParser {
                 superhero.setDescrption(data_hero.getString(json_description));
             }
             // Imagen
-            superhero.setImage(data_hero.getJSONObject(json_thumbnail).getString(json_path));
+            JSONObject thumb = data_hero.getJSONObject(json_thumbnail);
+            superhero.setImage(thumb.getString(json_path) + "." + thumb.getString(json_extension));
             // URLs
             JSONArray urlArray = data_hero.getJSONArray(json_urls);
             for (int j = 0; j < urlArray.length(); j++) {
@@ -80,9 +82,11 @@ public class SuperheroParser {
             }
             heroList.add(superhero);
         }
+
         for (Superhero result : heroList) {
             Log.i(TAG," preparing data " + result.getName());
         }
+
         return heroList;
     }
 }

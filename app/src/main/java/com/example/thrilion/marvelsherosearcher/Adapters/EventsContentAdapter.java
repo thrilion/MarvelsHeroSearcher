@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.example.thrilion.marvelsherosearcher.POJO.Event;
 import com.example.thrilion.marvelsherosearcher.R;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,11 +49,17 @@ public class EventsContentAdapter extends RecyclerView.Adapter<EventsContentAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        holder.mTxtEventTitle.setText(this.mEventList.get(position).getTitle());
+        holder.mTxtEventDescription.setText(this.mEventList.get(position).getDescription());
+        Picasso.with(mContext).load(this.mEventList.get(position).getImage()).into(holder.mImgComic);
     }
 
     @Override
     public int getItemCount() {
         return this.mEventList.size();
+    }
+
+    public void updateComicList(ArrayList<Event> eventList) {
+        this.mEventList = eventList;
     }
 }

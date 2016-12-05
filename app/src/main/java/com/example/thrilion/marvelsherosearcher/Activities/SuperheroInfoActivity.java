@@ -20,9 +20,11 @@ import com.example.thrilion.marvelsherosearcher.POJO.Superhero;
 import com.example.thrilion.marvelsherosearcher.R;
 import com.squareup.picasso.Picasso;
 
-public class SuperheroInfoActivity extends AppCompatActivity implements View.OnClickListener{
+public class SuperheroInfoActivity extends AppCompatActivity
+        implements View.OnClickListener, ComicsContentFragment.OnComicsContentInterface,
+        EventsContentFragment.OnEventsContentInterface{
 
-    private static final String IMG_EXTENSION = ".jpg";
+    private static final String TAG = "SuperheroInfoActivity";
     private Superhero mSuperhero;
 
     @Override
@@ -61,7 +63,7 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
         mComicsButton.setOnClickListener(this);
 
         // Enlazamos los valores del Superheroe seleccionado con la vista
-        Picasso.with(this).load(this.mSuperhero.getImage() + IMG_EXTENSION).into(mImgSuperhero);
+        Picasso.with(this).load(this.mSuperhero.getImage()).into(mImgSuperhero);
         mTxtSuperheroName.setText(this.mSuperhero.getName());
         mTxtSuperheroDesc.setText(this.mSuperhero.getDescription());
 
@@ -79,8 +81,8 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
     // Añadimos los Fragments al TabLayout
     private void setupViewPager(ViewPager viewPager) {
         ResourcesAdapter adapter = new ResourcesAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ComicsContentFragment(), "List");
-        adapter.addFragment(new EventsContentFragment(), "Tile");
+        adapter.addFragment(new ComicsContentFragment(), "Comics");
+        adapter.addFragment(new EventsContentFragment(), "Eventos");
         viewPager.setAdapter(adapter);
     }
 
@@ -103,5 +105,10 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
                 startActivity(intentComics);
                 break;
         }
+    }
+
+    @Override
+    public int getSelectedSuperheroId() {
+        return mSuperhero.getId();
     }
 }

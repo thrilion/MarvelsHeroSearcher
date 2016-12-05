@@ -5,37 +5,35 @@ package com.example.thrilion.marvelsherosearcher.POJO;
  */
 
 public class Comic {
+    private int mId;
     private String mTitle;
     private String mDescription;
     private String mImage;
 
-    public Comic(String title, String description, String image) {
-        this.mTitle = mTitle;
-        this.mDescription = mDescription;
-        this.mImage = mImage;
-    }
+    public Comic() { }
 
+    public int getId() {
+        return mId;
+    }
+    public void setId(int aId) {
+        this.mId = aId;
+    }
     public String getTitle() {
         return mTitle;
     }
-
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
+    public void setTitle(String aTitle) {
+        this.mTitle = aTitle;
     }
-
     public String getDescription() {
         return mDescription;
     }
-
-    public void setDescription(String mDescription) {
-        this.mDescription = mDescription;
+    public void setDescription(String aDescription) {
+        this.mDescription = aDescription;
     }
-
     public String getImage() {
         return mImage;
     }
-
-    public void setImage(String mImage) {
-        this.mImage = mImage;
+    public void setImage(String aImage) {
+        this.mImage = aImage;
     }
 }
