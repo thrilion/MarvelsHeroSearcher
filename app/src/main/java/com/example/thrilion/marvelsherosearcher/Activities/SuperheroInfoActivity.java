@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.thrilion.marvelsherosearcher.Fragments.SuperheroInfoFragment;
 import com.example.thrilion.marvelsherosearcher.Fragments.SuperheroListFragment;
 import com.example.thrilion.marvelsherosearcher.POJO.Superhero;
 import com.example.thrilion.marvelsherosearcher.R;
@@ -42,7 +41,6 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
         // Recuperamos el intent y el objeto Superhero seleccionado
         Intent intent = getIntent();
         this.mSuperhero = intent.getParcelableExtra(SuperheroListFragment.EXTRA_SUPERHERO);
-        SuperheroInfoFragment.setSuperhero(this.mSuperhero);
 
         // Views de la activity
         final ImageView mImgSuperhero = (ImageView) findViewById(R.id.img_superhero);
@@ -55,17 +53,17 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
         mComicsButton.setOnClickListener(this);
 
         // Enlazamos los valores del Superheroe seleccionado con la vista
-        Picasso.with(this).load(mSuperhero.getImage() + IMG_EXTENSION).into(mImgSuperhero);
-        mTxtSuperheroName.setText(mSuperhero.getName());
-        mTxtSuperheroDesc.setText(mSuperhero.getDescription());
+        Picasso.with(this).load(this.mSuperhero.getImage() + IMG_EXTENSION).into(mImgSuperhero);
+        mTxtSuperheroName.setText(this.mSuperhero.getName());
+        mTxtSuperheroDesc.setText(this.mSuperhero.getDescription());
 
         // Comprobamos que el Superheroe tenga disponibles las urls recogidas por la API
         // En caso de faltar alguna, deshabilitamos el botón
-        if(mSuperhero.getDetailLink() == null){
+        if(this.mSuperhero.getDetailLink() == null){
             mDetailsButton.setEnabled(false);
-        }if(mSuperhero.getWikiLink() == null){
+        }if(this.mSuperhero.getWikiLink() == null){
             mWikiButton.setEnabled(false);
-        }if(mSuperhero.getComicLink() == null){
+        }if(this.mSuperhero.getComicLink() == null){
             mComicsButton.setEnabled(false);
         }
     }
@@ -74,17 +72,17 @@ public class SuperheroInfoActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_detail:
-                Uri uriDetail = Uri.parse(mSuperhero.getDetailLink());
+                Uri uriDetail = Uri.parse(this.mSuperhero.getDetailLink());
                 Intent intentDetail = new Intent(Intent.ACTION_VIEW, uriDetail);
                 startActivity(intentDetail);
                 break;
             case R.id.btn_wiki:
-                Uri uriWiki = Uri.parse(mSuperhero.getWikiLink());
+                Uri uriWiki = Uri.parse(this.mSuperhero.getWikiLink());
                 Intent intentWiki = new Intent(Intent.ACTION_VIEW, uriWiki);
                 startActivity(intentWiki);
                 break;
             case R.id.btn_comics:
-                Uri uriComics = Uri.parse(mSuperhero.getComicLink());
+                Uri uriComics = Uri.parse(this.mSuperhero.getComicLink());
                 Intent intentComics = new Intent(Intent.ACTION_VIEW, uriComics);
                 startActivity(intentComics);
                 break;
