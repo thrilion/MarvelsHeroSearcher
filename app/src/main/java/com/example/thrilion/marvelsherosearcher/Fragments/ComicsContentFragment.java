@@ -43,6 +43,7 @@ public class ComicsContentFragment extends Fragment {
 
     public interface OnComicsContentInterface{
         int getSelectedSuperheroId();
+        void setComicListSize(int size);
     }
     private OnComicsContentInterface mComicsContentCallback;
 
@@ -136,6 +137,7 @@ public class ComicsContentFragment extends Fragment {
                     e.printStackTrace();
                 }
                 // Hacemos un update de la vista
+                mComicsContentCallback.setComicListSize(comicList.size());
                 mAdapter.updateComicList(comicList);
                 mAdapter.notifyDataSetChanged();
             }

@@ -2,12 +2,16 @@ package com.example.thrilion.marvelsherosearcher.Activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,7 +29,14 @@ public class SuperheroInfoActivity extends AppCompatActivity
         EventsContentFragment.OnEventsContentInterface{
 
     private static final String TAG = "SuperheroInfoActivity";
+    private static final String COMICS_TAB_TITLE = "Comics";
+    private static final String EVENTS_TAB_TITLE = "Eventos";
+    private static final int COMICS_TAB_POS = 0;
+    private static final int EVENTS_TAB_POS = 1;
     private Superhero mSuperhero;
+    private TabLayout mTabs;
+    private int mComicListSize;
+    private int mEventListSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +52,10 @@ public class SuperheroInfoActivity extends AppCompatActivity
         setupViewPager(viewPager);
 
         // Seteamos el TabLayout
-        TabLayout tabs = (TabLayout) findViewById(R.id.resources_tabs);
-        tabs.setupWithViewPager(viewPager);
+        mTabs = (TabLayout) findViewById(R.id.resources_tabs);
+        mTabs.setupWithViewPager(viewPager);
 
-        // Habilitamos el Action UP button
+        // Habilitamos el up button
         ActionBar actionBar = this.getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -53,38 +64,57 @@ public class SuperheroInfoActivity extends AppCompatActivity
         this.mSuperhero = intent.getParcelableExtra(MainActivity.EXTRA_SUPERHERO);
 
         // Views de la activity
-        final ImageView mImgSuperhero = (ImageView) findViewById(R.id.img_superhero);
-        final TextView mTxtSuperheroName = (TextView) findViewById(R.id.txt_superhero_name);
-        final TextView mTxtSuperheroDesc = (TextView) findViewById(R.id.txt_superhero_description);
-        final Button mDetailsButton = (Button) findViewById(R.id.btn_detail);mDetailsButton.setOnClickListener(this);
-        final Button mWikiButton = (Button) findViewById(R.id.btn_wiki);
-        mWikiButton.setOnClickListener(this);
-        final Button mComicsButton;mComicsButton = (Button) findViewById(R.id.btn_comics);
-        mComicsButton.setOnClickListener(this);
+        final ImageView imgSuperhero = (ImageView) findViewById(R.id.img_superhero);
+        final TextView txtSuperheroName = (TextView) findViewById(R.id.txt_superhero_name);
+        final TextView txtSuperheroDesc = (TextView) findViewById(R.id.txt_superhero_description);
+        final Button detailsButton = (Button) findViewById(R.id.btn_detail);
+        detailsButton.setOnClickListener(this);
+        final Button wikiButton = (Button) findViewById(R.id.btn_wiki);
+        wikiButton.setOnClickListener(this);
+        final Button comicsButton = (Button) findViewById(R.id.btn_comics);
+        comicsButton.setOnClickListener(this);
 
         // Enlazamos los valores del Superheroe seleccionado con la vista
-        Picasso.with(this).load(this.mSuperhero.getImage()).into(mImgSuperhero);
-        mTxtSuperheroName.setText(this.mSuperhero.getName());
-        mTxtSuperheroDesc.setText(this.mSuperhero.getDescription());
+        Picasso.with(this).load(this.mSuperhero.getImage()).into(imgSuperhero);
+        txtSuperheroName.setText(this.mSuperhero.getName());
+        txtSuperheroDesc.setText(this.mSuperhero.getDescription());
 
         // Comprobamos que el Superheroe tenga disponibles las urls recogidas por la API
         // En caso de faltar alguna, deshabilitamos el botón
         if(this.mSuperhero.getDetailLink() == null){
-            mDetailsButton.setEnabled(false);
+            detailsButton.setEnabled(false);
         }if(this.mSuperhero.getWikiLink() == null){
-            mWikiButton.setEnabled(false);
+            wikiButton.setEnabled(false);
         }if(this.mSuperhero.getComicLink() == null){
-            mComicsButton.setEnabled(false);
+            comicsButton.setEnabled(false);
         }
     }
 
     // Añadimos los Fragments al TabLayout
     private void setupViewPager(ViewPager viewPager) {
         ResourcesAdapter adapter = new ResourcesAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ComicsContentFragment(), "Comics");
-        adapter.addFragment(new EventsContentFragment(), "Eventos");
+        adapter.addFragment(new ComicsContentFragment(), COMICS_TAB_TITLE);
+        adapter.addFragment(new EventsContentFragment(), EVENTS_TAB_TITLE);
         viewPager.setAdapter(adapter);
     }
+
+    @Override
+    public int getSelectedSuperheroId() {
+        return mSuperhero.getId();
+    }
+
+    @Override
+    public void setComicListSize(int size) {
+        this.mComicListSize = size;
+        this.mTabs.getTabAt(COMICS_TAB_POS).setText("(" + size + ") " + COMICS_TAB_TITLE);
+    }
+
+    @Override
+    public void setEventListSize(int size) {
+        this.mEventListSize = size;
+        this.mTabs.getTabAt(EVENTS_TAB_POS).setText("(" + size + ") " + EVENTS_TAB_TITLE);
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -108,7 +138,34 @@ public class SuperheroInfoActivity extends AppCompatActivity
     }
 
     @Override
-    public int getSelectedSuperheroId() {
-        return mSuperhero.getId();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            default:
+                return super.onOptionsItemSelected(item);
+            case android.R.id.home:
+                // Si se pulsa el up button
+                // Obtenemos el intent de la actividad padre
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                upIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                // Comprobamos si DetailActivity no se creó desde CourseActivity
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)
+                        || this.isTaskRoot()) {
+
+                    // Construimos de nuevo la tarea para ligar ambas actividades
+                    TaskStackBuilder.create(this)
+                            .addNextIntentWithParentStack(upIntent)
+                            .startActivities();
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    // Terminamos con el método correspondiente para Android 5.x
+                    this.finishAfterTransition();
+                    return true;
+                }
+
+                // Dejamos que el sistema maneje el comportamiento del up button
+                return false;
+        }
     }
 }

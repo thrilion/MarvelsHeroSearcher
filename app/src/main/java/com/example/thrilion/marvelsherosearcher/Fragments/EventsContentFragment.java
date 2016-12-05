@@ -40,6 +40,7 @@ public class EventsContentFragment extends Fragment {
 
     public interface OnEventsContentInterface{
         int getSelectedSuperheroId();
+        void setEventListSize(int size);
     }
     private EventsContentFragment.OnEventsContentInterface mEventsContentCallback;
 
@@ -132,6 +133,7 @@ public class EventsContentFragment extends Fragment {
                     e.printStackTrace();
                 }
                 // Hacemos un update de la vista
+                mEventsContentCallback.setEventListSize(eventList.size());
                 mAdapter.updateComicList(eventList);
                 mAdapter.notifyDataSetChanged();
             }
